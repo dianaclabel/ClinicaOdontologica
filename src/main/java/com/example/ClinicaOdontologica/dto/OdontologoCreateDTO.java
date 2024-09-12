@@ -15,6 +15,5 @@ public class OdontologoCreateDTO{
     @NotBlank (message = "La matricula es obligatoria")
     private String matricula;
 
-
 }
 
