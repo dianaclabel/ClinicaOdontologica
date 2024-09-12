@@ -30,9 +30,9 @@ public class OdontologosControlador {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PutMapping
-    public ResponseEntity<?> modificarOdontologo(@RequestBody OdontologoDTO odontologoDTO){
-        odontologosSevicio.modificarOdontologo(odontologoDTO);
+    @PutMapping("/{id}")
+    public ResponseEntity<?> modificarOdontologo(@PathVariable Long id,@RequestBody OdontologoDTO odontologoDTO){
+        odontologosSevicio.modificarOdontologo(id,odontologoDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

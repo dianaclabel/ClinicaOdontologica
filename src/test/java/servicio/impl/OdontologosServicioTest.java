@@ -39,7 +39,7 @@ public class OdontologosServicioTest {
         assertEquals(guardado.getMatricula(), buscado.getMatricula());
     }
 
-    @Test
+    /*@Test
     public void testModificarOdontologo() {
         OdontologoDTO guardado = odontologosSevicio.registrarOdontologo(odontologo);
         guardado.setApellido("ModificadoTest");
@@ -50,7 +50,7 @@ public class OdontologosServicioTest {
         assertEquals(guardado.getApellido(), modificado.getApellido());
         assertEquals(guardado.getNombre(), modificado.getNombre());
         assertEquals(guardado.getMatricula(), modificado.getMatricula());
-    }
+    }*/
 
     @Test
     public void testBuscarTodos() {

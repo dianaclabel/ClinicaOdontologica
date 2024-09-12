@@ -7,7 +7,7 @@ import java.util.Set;
 public interface IOdontologosSevicio {
     OdontologoDTO registrarOdontologo(OdontologoDTO odontologoDTO) ;
     void eliminarOdontologo(Long id);
-    OdontologoDTO modificarOdontologo(OdontologoDTO odontologoDTO);
+    OdontologoDTO modificarOdontologo(Long id,OdontologoDTO odontologoDTO);
     OdontologoDTO buscarUnOdontologo(Long id);
     Set<OdontologoDTO> buscarTodos();
 

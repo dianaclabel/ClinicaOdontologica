@@ -5,7 +5,7 @@
 
 export class OdontologosApi {
   async getAll() {
-    const response = await fetch("/api/odontologos");
+    const response = await fetch("/api/odontologos/all");
     const data = await response.json();
     return data;
   }

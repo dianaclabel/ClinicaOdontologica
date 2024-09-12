@@ -43,16 +43,24 @@ public class OdontologosServicio  implements IOdontologosSevicio{
     }
 
     @Override
-    public OdontologoDTO modificarOdontologo(OdontologoDTO odontologoDTO) {
+    public OdontologoDTO modificarOdontologo( Long id, OdontologoDTO odontologoDTO) {
         logger.info("Modificando odontologo id: " + odontologoDTO.getId());
-        OdontologoDTO odontologoModificado = null;
-        Optional<Odontologo> odontologoAModificar = odontologosRepositorio.findById(odontologoDTO.getId());
-        if (odontologoAModificar.isPresent()) {
-            Odontologo odontologo = springConfig.getModelMapper().map(odontologoDTO, Odontologo.class);
-            odontologoModificado = springConfig.getModelMapper().map(odontologosRepositorio.save(odontologo), OdontologoDTO.class);
+
+        Odontologo odontologoAModificar = odontologosRepositorio.findById(id).orElse(null);
+        if (odontologoAModificar != null) {
+
+            if(odontologoDTO.getNombre() != null) odontologoAModificar.setNombre(odontologoDTO.getNombre());
+            if (odontologoDTO.getApellido() != null) odontologoAModificar.setApellido(odontologoDTO.getApellido());
+            if (odontologoDTO.getMatricula() != null) odontologoAModificar.setMatricula(odontologoDTO.getMatricula());
+
+            Odontologo odontologoGuardado = odontologosRepositorio.save(odontologoAModificar);
+            logger.info("Odontologo Modificado");
+            return springConfig.getModelMapper().map(odontologoGuardado, OdontologoDTO.class);
+        }else{
+            logger.info("Odontologo no encontrado");
+            return null;
         }
-        logger.info("Odontologo Modificado");
-        return odontologoModificado;
+
     }
 
     @Override

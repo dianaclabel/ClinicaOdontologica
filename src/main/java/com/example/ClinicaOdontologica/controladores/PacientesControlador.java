@@ -23,6 +23,8 @@ public class PacientesControlador {
     public ResponseEntity<?> agregarPaciente(@RequestBody PacienteDTO pacienteDTO){
         pacientesServicio.registrarPaciente(pacienteDTO);
         return ResponseEntity.ok(HttpStatus.OK);
+        /*PacienteDTO nuevoPaciente = pacientesServicio.registrarPaciente(pacienteDTO);
+        return new ResponseEntity<>(nuevoPaciente, HttpStatus.CREATED);*/
     }
 
     @PutMapping
