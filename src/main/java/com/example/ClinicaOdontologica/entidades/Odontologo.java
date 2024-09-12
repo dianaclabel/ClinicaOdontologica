@@ -25,4 +25,5 @@ public class Odontologo {
 
     @Column(nullable = false)
     private String matricula;
+
 }

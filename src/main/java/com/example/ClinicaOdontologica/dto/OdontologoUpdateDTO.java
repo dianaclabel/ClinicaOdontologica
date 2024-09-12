@@ -4,17 +4,11 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class OdontologoCreateDTO{
+public class OdontologoUpdateDTO {
 
-    @NotBlank (message = "El nombre es obligatorio")
     private String nombre;
 
-    @NotBlank (message = "El apellido es obligatorio")
     private String apellido;
 
-    @NotBlank (message = "La matricula es obligatoria")
     private String matricula;
-
-
 }
-
