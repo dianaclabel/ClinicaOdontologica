@@ -3,12 +3,17 @@ package com.example.ClinicaOdontologica.controladores;
 import com.example.ClinicaOdontologica.dto.OdontologoCreateDTO;
 import com.example.ClinicaOdontologica.dto.OdontologoUpdateDTO;
 import com.example.ClinicaOdontologica.entidades.Odontologo;
+import com.example.ClinicaOdontologica.model.OdontologoDTO;
 import com.example.ClinicaOdontologica.servicios.IOdontologosSevicio;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -16,9 +21,38 @@ import java.util.List;
 @RequestMapping("/api/odontologos")
 public class OdontologosControlador {
 
+
     @Autowired
     private IOdontologosSevicio odontologosSevicio;
+    @PostMapping
+    public ResponseEntity<?> agregarOdontologo(@RequestBody OdontologoDTO odontologoDTO){
+        odontologosSevicio.registrarOdontologo(odontologoDTO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 
+    @PutMapping
+    public ResponseEntity<?> modificarOdontologo(@RequestBody OdontologoDTO odontologoDTO){
+        odontologosSevicio.modificarOdontologo(odontologoDTO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminarOdontologo(@PathVariable Long id){
+        odontologosSevicio.eliminarOdontologo(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Odontologo Eliminado");
+    }
+
+    @GetMapping("/{id}")
+    public OdontologoDTO buscarUno(@PathVariable Long id){
+        return odontologosSevicio.buscarUnOdontologo(id);
+    }
+
+    @GetMapping("/all")
+    public Collection<OdontologoDTO> listarTodos(){
+        return odontologosSevicio.buscarTodos();
+    }
+
+ /*
     @GetMapping
     public ResponseEntity<List<Odontologo>> getOdontologos() {
         return ResponseEntity.ok(odontologosSevicio.listar());
@@ -45,7 +79,7 @@ public class OdontologosControlador {
     public ResponseEntity<Odontologo> actualizarOdontologo(@PathVariable Long id, @RequestBody OdontologoUpdateDTO odontologo) {
         return ResponseEntity.ok(odontologosSevicio.actualizar(id, odontologo));
     }
-
+*/
 
 
 }
