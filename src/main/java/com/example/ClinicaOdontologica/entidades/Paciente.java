@@ -1,5 +1,6 @@
 package com.example.ClinicaOdontologica.entidades;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,13 +22,18 @@ public class Paciente {
     @Column(nullable = false)
     private String apellido;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @Column(nullable = false)
+    private String dni;
+
+    @Column( name = "fecha_alta")
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Date fechaAlta;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(nullable = false, name = "domicilio_id")
     private Domicilio domicilio;
 
-    @Column(nullable = false)
-    private String DNI;
 
-    @Column(nullable = false, name = "fecha_alta")
-    private Date fechaAlta;
+
+
 }
