@@ -1,16 +1,4 @@
-// form component using DOM manipulation and bootstrap classes
-// it receives a single object with the following properties:
-// - id: string with the id of the form (it is used also to generate fields ids)
-// - onSubmit: function that receives the form data as an object
-// - record: object with the values to set in the form fields
-// - fields: array of objects with the following properties:
-//   - name: string with the name of the input
-//   - label: string with the label of the input
-//   - type: string with the type of the input (text, number, email, password, etc)
-//   - placeholder?: string with the placeholder of the input
-//   - validate?: function that receives the value of the input and returns a boolean or a string with the error message
-// - submit: object with the following properties:
-//   - text: string with the text of the button
+
 
 export const FORM_EVENT_SET_VALUES = "setValues";
 export const FORM_EVENT_UPDATE_SUBMIT = "updateSubmit";

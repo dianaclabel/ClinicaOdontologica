@@ -50,25 +50,6 @@ public class PacientesServicio implements IPacientesServicio {
         }
         logger.info("Paciente modificado");
         return pacienteModificado;
-
-        /*logger.info("Modificando paciente id: " + pacienteDTO.getId());
-
-        Paciente pacienteAModificar = pacientesRepositorio.findById(id).orElse(null);
-        if (pacienteAModificar != null) {
-
-            if (pacienteDTO.getNombre() != null) pacienteAModificar.setNombre(pacienteDTO.getNombre());
-            if (pacienteDTO.getApellido() != null) pacienteAModificar.setApellido(pacienteDTO.getApellido());
-            if (pacienteDTO.getDni() != null) pacienteAModificar.setDni(pacienteDTO.getDni());
-            if (pacienteDTO.getFechaAlta() != null) pacienteAModificar.setFechaAlta(pacienteDTO.getFechaAlta());
-            if (pacienteDTO.getDomicilio() != null) pacienteAModificar.setDomicilio(pacienteDTO.getDomicilio());
-
-            Paciente pacienteGuardado = pacientesRepositorio.save(pacienteAModificar);
-            logger.info("Paciente Modificado");
-            return springConfig.getModelMapper().map(pacienteGuardado, PacienteDTO.class);
-        }else{
-            logger.info("paciente no encontrado");
-            return null;
-        }*/
     }
 
     @Override

@@ -29,9 +29,9 @@ public class PacientesServicioTest {
         paciente = new PacienteDTO();
         paciente.setNombre("PacienteTest");
         paciente.setApellido("PacienteTest");
-        paciente.setFecha_ingreso(LocalDate.now());
-        paciente.setDni("11111111");
         paciente.setDomicilio(domicilio);
+        paciente.setFechaAlta(LocalDate.now().toString());
+        paciente.setDni("11111111");
     }
     @Test
     public void testRegistrarPaciente(){
@@ -48,7 +48,7 @@ public class PacientesServicioTest {
         assertEquals(guardado.getId(), buscado.getId());
         assertEquals(guardado.getApellido(), buscado.getApellido());
         assertEquals(guardado.getNombre(), buscado.getNombre());
-        assertEquals(guardado.getFecha_ingreso(), buscado.getFecha_ingreso());
+        assertEquals(guardado.getFechaAlta(), buscado.getFechaAlta());
         assertEquals(guardado.getDni(), buscado.getDni());
         assertEquals(guardado.getDomicilio().getId(), buscado.getDomicilio().getId());
         assertEquals(guardado.getDomicilio().getCalle(), buscado.getDomicilio().getCalle());

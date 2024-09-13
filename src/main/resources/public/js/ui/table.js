@@ -1,6 +1,4 @@
-// Function to create table using DOM manipulation, params are array of columns and array of rows
-// Columns objects have the following structure: {key: string, label: string, format?: function}
-// Rows is a function that returns a promise that resolves array of objects with keys that match the columns keys
+
 
 export const TABLE_EVENT_RELOAD = "reload";
 

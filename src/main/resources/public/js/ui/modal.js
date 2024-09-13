@@ -1,10 +1,4 @@
-// Modal created with dom and bootstrap classes
-// it receives a single object parameter with the following properties:
-// id: string, the id of the modal
-// title: string, the modal title
-// content: dom object, the content of the modal
-// footer?: dom object, the footer of the modal
-// it has a closing button on the top right corner
+
 export const MODAL_EVENT_SET_TITLE = "setTitle";
 
 export function Modal({ id, title, content, footer }) {
