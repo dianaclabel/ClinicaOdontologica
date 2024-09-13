@@ -1,4 +1,6 @@
 import { TurnosApi } from "../api/turnos.api.js";
+import { PacientesApi } from "../api/pacientes.api.js";
+import { OdontologosApi } from "../api/odontologos.api.js"; // Asume que esta API existe para obtener odontólogos
 import { Button } from "../ui/button.js";
 import { Container } from "../ui/container.js";
 import { Form, FORM_EVENT_INIT_RECORD } from "../ui/form.js";
@@ -9,13 +11,28 @@ import { Table, TABLE_EVENT_RELOAD } from "../ui/table.js";
 import { dispatch } from "../utils/dispatch.js";
 
 const turnosApi = new TurnosApi();
+const pacientesApi = new PacientesApi();
+const odontologosApi = new OdontologosApi();
 
 const TURNO_MODAL_ID = "modalTurno";
 const TURNOS_TABLE_ID = "turnosTable";
 const TURNO_FORM_ID = "formTurno";
 
-export const TurnosView = async () =>
-  Container({
+export const TurnosView = async () => {
+  // Obtener listas de pacientes y odontólogos
+  const pacientes = await pacientesApi.getAll();
+  const odontologos = await odontologosApi.getAll();
+
+  // Generar opciones para selects de pacientes y odontólogos
+  const pacienteOptions = pacientes.map(
+    (paciente) => `<option value="${paciente.id}">${paciente.nombre} ${paciente.apellido}</option>`
+  );
+
+  const odontologoOptions = odontologos.map(
+    (odontologo) => `<option value="${odontologo.id}">${odontologo.nombre} ${odontologo.apellido}</option>`
+  );
+
+  return Container({
     classnames: "py-5 px-0",
     children: [
       Stack({
@@ -102,15 +119,17 @@ export const TurnosView = async () =>
           fields: [
             {
               name: "pacienteId",
-              label: "ID del Paciente",
-              type: "text",
-              validate: (v) => (v ? true : "El ID del paciente es requerido"),
+              label: "Paciente",
+              type: "select",
+              options: pacienteOptions.join(""),
+              validate: (v) => (v ? true : "Debe seleccionar un paciente"),
             },
             {
               name: "odontologoId",
-              label: "ID del Odontólogo",
-              type: "text",
-              validate: (v) => (v ? true : "El ID del odontólogo es requerido"),
+              label: "Odontólogo",
+              type: "select",
+              options: odontologoOptions.join(""),
+              validate: (v) => (v ? true : "Debe seleccionar un odontólogo"),
             },
             {
               name: "fecha",
@@ -126,7 +145,7 @@ export const TurnosView = async () =>
             } else {
               await turnosApi.create(formData);
             }
-            $(`#${TURNO_MODAL_ID}`).modal("hide");
+            $(`#${TURNO_MODAL_ID}`).modal("hide"); // Bootstrap
             dispatch(
               document.getElementById(TURNOS_TABLE_ID),
               TABLE_EVENT_RELOAD
@@ -136,3 +155,9 @@ export const TurnosView = async () =>
       }),
     ],
   });
+};
+
+
+
+
+//

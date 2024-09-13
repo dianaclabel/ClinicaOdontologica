@@ -2,6 +2,7 @@ import { Container } from "./ui/container.js";
 import { createHeading as Heading } from "./ui/heading.js";
 import { OdontologosView } from "./views/odontologos.view.js";
 import { PacientesView } from "./views/pacientes.view.js";
+import { TurnosView } from "./views/turnos.view.js";
 
 const ClinicaView = async () =>
   Container({
