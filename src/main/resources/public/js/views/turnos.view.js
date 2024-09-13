@@ -16,23 +16,10 @@ const odontologosApi = new OdontologosApi();
 
 const TURNO_MODAL_ID = "modalTurno";
 const TURNOS_TABLE_ID = "turnosTable";
-const TURNO_FORM_ID = "formTurno";
+export const TURNO_FORM_ID = "formTurno";
 
-export const TurnosView = async () => {
-  // Obtener listas de pacientes y odontólogos
-  const pacientes = await pacientesApi.getAll();
-  const odontologos = await odontologosApi.getAll();
-
-  // Generar opciones para selects de pacientes y odontólogos
-  const pacienteOptions = pacientes.map(
-    (paciente) => `<option value="${paciente.id}">${paciente.nombre} ${paciente.apellido}</option>`
-  );
-
-  const odontologoOptions = odontologos.map(
-    (odontologo) => `<option value="${odontologo.id}">${odontologo.nombre} ${odontologo.apellido}</option>`
-  );
-
-  return Container({
+export const TurnosView = async () =>
+  Container({
     classnames: "py-5 px-0",
     children: [
       Stack({
@@ -66,7 +53,7 @@ export const TurnosView = async () => {
           { key: "id", label: "ID" },
           { key: "paciente.nombre", label: "Paciente" },
           { key: "odontologo.nombre", label: "Odontólogo" },
-          { key: "fecha", label: "Fecha del Turno" },
+          { key: "fecha_hora", label: "Fecha del Turno" },
           {
             key: "acciones",
             label: "Acciones",
@@ -74,24 +61,24 @@ export const TurnosView = async () => {
               Stack({
                 gap: "0.5rem",
                 children: [
-                  Button({
-                    text: "Editar",
-                    onclick: () => {
-                      const modal = document.getElementById(TURNO_MODAL_ID);
-                      $(modal).modal("show");
-                      dispatch(modal, MODAL_EVENT_SET_TITLE, "Editar Turno");
+                  // Button({
+                  //   text: "Editar",
+                  //   onclick: () => {
+                  //     const modal = document.getElementById(TURNO_MODAL_ID);
+                  //     $(modal).modal("show");
+                  //     dispatch(modal, MODAL_EVENT_SET_TITLE, "Editar Turno");
 
-                      const form = document.getElementById(TURNO_FORM_ID);
-                      dispatch(form, FORM_EVENT_INIT_RECORD, record);
-                    },
-                    classnames: "btn btn-primary",
-                  }),
+                  //     const form = document.getElementById(TURNO_FORM_ID);
+                  //     dispatch(form, FORM_EVENT_INIT_RECORD, record);
+                  //   },
+                  //   classnames: "btn btn-primary",
+                  // }),
 
                   Button({
                     text: "Eliminar",
                     onclick: async () => {
                       const confirmDelete = confirm(
-                        `¿Está seguro que desea eliminar el turno?`
+                        "¿Está seguro que desea eliminar el turno?"
                       );
                       if (!confirmDelete) {
                         return;
@@ -118,23 +105,37 @@ export const TurnosView = async () => {
           classNames: "p-4",
           fields: [
             {
-              name: "pacienteId",
+              name: "paciente.id",
               label: "Paciente",
-              type: "select",
-              options: pacienteOptions.join(""),
+              tag: "select",
+              getChoices: () =>
+                pacientesApi.getAll().then((pacientes) =>
+                  pacientes.map((p) => ({
+                    value: p.id,
+                    label: `${p.nombre} ${p.apellido}`,
+                  }))
+                ),
               validate: (v) => (v ? true : "Debe seleccionar un paciente"),
             },
             {
-              name: "odontologoId",
+              name: "odontologo.id",
               label: "Odontólogo",
-              type: "select",
-              options: odontologoOptions.join(""),
+              tag: "select",
+              getChoices: () =>
+                odontologosApi
+                  .getAll()
+                  .then((odontologos) =>
+                    odontologos.map((o) => ({
+                      value: o.id,
+                      label: `${o.nombre} ${o.apellido}`,
+                    }))
+                  ),
               validate: (v) => (v ? true : "Debe seleccionar un odontólogo"),
             },
             {
-              name: "fecha",
-              label: "Fecha del Turno",
-              type: "date",
+              name: "fecha_hora",
+              label: "Fecha y hora del Turno",
+              type: "datetime-local",
               validate: (v) => (v ? true : "La fecha es requerida"),
             },
           ],
@@ -155,9 +156,5 @@ export const TurnosView = async () => {
       }),
     ],
   });
-};
-
-
-
 
 //

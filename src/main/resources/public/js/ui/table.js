@@ -1,5 +1,3 @@
-
-
 export const TABLE_EVENT_RELOAD = "reload";
 
 export async function Table({ id, columns = [], getRecords } = {}) {
@@ -35,6 +33,10 @@ export async function Table({ id, columns = [], getRecords } = {}) {
   thead.appendChild(theadRow);
   table.appendChild(thead);
 
+  function getNestedValue(obj, key) {
+    return key.split(".").reduce((acc, part) => acc?.[part], obj);
+  }
+
   async function loadRows() {
     tbody.innerHTML = ""; // Clear existing rows
     try {
@@ -45,8 +47,8 @@ export async function Table({ id, columns = [], getRecords } = {}) {
           const td = document.createElement("td");
           // if format returns HTMLElement, append it to td, else set textContent
           const data = column.format
-            ? column.format(row[column.key], row)
-            : row[column.key];
+            ? column.format(getNestedValue(row, column.key), row)
+            : getNestedValue(row, column.key);
           if (data instanceof HTMLElement) {
             td.appendChild(data);
           } else {

@@ -5,16 +5,15 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "turnos")
+@Data
 public class Turno {
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(name = "fecha_hora")
+    @Column(name = "fecha_hora", nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime fecha_hora;
 
     @ManyToOne

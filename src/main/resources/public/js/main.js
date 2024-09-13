@@ -12,9 +12,11 @@ const ClinicaView = async () =>
         classnames: "text-center text-primary mb-3",
       }),
 
-      await OdontologosView(),
-      await PacientesView(),
       await TurnosView(),
+      await PacientesView(),
+      await OdontologosView(),
+
+
     ],
   });
 

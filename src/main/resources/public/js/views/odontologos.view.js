@@ -1,12 +1,17 @@
 import { OdontologosApi } from "../api/odontologos.api.js";
 import { Button } from "../ui/button.js";
 import { Container } from "../ui/container.js";
-import { Form, FORM_EVENT_INIT_RECORD } from "../ui/form.js";
+import {
+  Form,
+  FORM_EVENT_INIT_RECORD,
+  FORM_EVENT_RELOAD_ALL_CHOICES,
+} from "../ui/form.js";
 import { createHeading as Heading } from "../ui/heading.js";
 import { Modal, MODAL_EVENT_SET_TITLE } from "../ui/modal.js";
 import { Stack } from "../ui/stack.js";
 import { Table, TABLE_EVENT_RELOAD } from "../ui/table.js";
 import { dispatch } from "../utils/dispatch.js";
+import { TURNO_FORM_ID } from "./turnos.view.js";
 
 const odontologosApi = new OdontologosApi();
 
@@ -137,6 +142,11 @@ export const OdontologosView = async () =>
             dispatch(
               document.getElementById(ODONTOLOGOS_TABLE_ID),
               TABLE_EVENT_RELOAD
+            );
+            // Reload turnos form
+            dispatch(
+              document.getElementById(TURNO_FORM_ID),
+              FORM_EVENT_RELOAD_ALL_CHOICES
             );
           },
         }),

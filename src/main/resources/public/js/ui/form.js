@@ -1,8 +1,7 @@
-
-
 export const FORM_EVENT_SET_VALUES = "setValues";
 export const FORM_EVENT_UPDATE_SUBMIT = "updateSubmit";
 export const FORM_EVENT_INIT_RECORD = "initRecord";
+export const FORM_EVENT_RELOAD_ALL_CHOICES = "reloadAllChoices";
 
 export function Form({
   id,
@@ -39,22 +38,38 @@ export function Form({
     fieldLabel.classList.add("form-label");
     fieldContainer.appendChild(fieldLabel);
 
-    const fieldInput = document.createElement("input");
-    fieldInput.id = fieldId;
-    fieldInput.type = field.type;
-    if (field.placeholder) {
-      fieldInput.placeholder = field.placeholder;
+    let fieldElement;
+    if (field.tag === "select") {
+      fieldElement = document.createElement("select");
+      if (field.getChoices) {
+        field.getChoices().then((choices) => {
+          for (const choice of choices) {
+            const option = document.createElement("option");
+            option.value = choice.value;
+            option.textContent = choice.label;
+            fieldElement.appendChild(option);
+          }
+        });
+      }
+    } else {
+      fieldElement = document.createElement("input");
+      fieldElement.type = field.type;
+      if (field.placeholder) {
+        fieldElement.placeholder = field.placeholder;
+      }
     }
+
+    fieldElement.id = fieldId;
     if (record) {
       const value = field.name
         .split(".")
         .reduce((acc, key) => acc?.[key], record);
       if (value) {
-        fieldInput.value = value;
+        fieldElement.value = value;
       }
     }
-    fieldInput.classList.add("form-control");
-    fieldContainer.appendChild(fieldInput);
+    fieldElement.classList.add("form-control");
+    fieldContainer.appendChild(fieldElement);
 
     const errorMessage = document.createElement("div");
     errorMessage.classList.add("invalid-feedback");
@@ -62,9 +77,9 @@ export function Form({
 
     form.appendChild(fieldContainer);
 
-    fieldInput.addEventListener("input", async () => {
+    fieldElement.addEventListener("input", async () => {
       if (!hasSubmitted) return;
-      await validateField(fieldInput, field);
+      await validateField(fieldElement, field);
     });
   }
 
@@ -160,6 +175,28 @@ export function Form({
   // listen for a custom event to update the onSubmit variable
   form.addEventListener(FORM_EVENT_UPDATE_SUBMIT, (event) => {
     onSubmit = event.detail;
+  });
+
+  // listen for a custom event to reload all choices
+  form.addEventListener(FORM_EVENT_RELOAD_ALL_CHOICES, async () => {
+    for (const field of fields) {
+      if (field.tag === "select" && field.getChoices) {
+        const fieldId = generateFieldId(id, field.name);
+        const selectElement = document.getElementById(fieldId);
+        if (selectElement) {
+          // Clear existing options
+          selectElement.innerHTML = "";
+          // Fetch and append new choices
+          const choices = await field.getChoices();
+          for (const choice of choices) {
+            const option = document.createElement("option");
+            option.value = choice.value;
+            option.textContent = choice.label;
+            selectElement.appendChild(option);
+          }
+        }
+      }
+    }
   });
 
   return form;
