@@ -13,7 +13,7 @@ const ClinicaView = async () =>
 
       await OdontologosView(),
       await PacientesView(),
-      // await TurnosView(),
+      await TurnosView(),
     ],
   });
 

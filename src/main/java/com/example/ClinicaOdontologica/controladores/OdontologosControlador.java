@@ -1,20 +1,13 @@
 package com.example.ClinicaOdontologica.controladores;
 
-import com.example.ClinicaOdontologica.dto.OdontologoCreateDTO;
-import com.example.ClinicaOdontologica.dto.OdontologoUpdateDTO;
-import com.example.ClinicaOdontologica.entidades.Odontologo;
 import com.example.ClinicaOdontologica.model.OdontologoDTO;
 import com.example.ClinicaOdontologica.servicios.IOdontologosSevicio;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
-import java.util.List;
+
 
 
 @RestController
