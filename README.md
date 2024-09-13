@@ -115,11 +115,6 @@ La aplicación debe ser desarrollada en capas:
 
         PATH: /api/turnos/all
 
-* Buscar un turno:
-    
-    Método: GET
-
-        PATH: /api/turnos/{id} 
 
 * Guardar turno:
 
@@ -127,17 +122,7 @@ La aplicación debe ser desarrollada en capas:
 
         PATH: /api/turnos
 
-* Eliminar turno:
-        
-   Método: DELETE
 
-        PATH : /api/turnos/{id} 
-
-* Actualizar turno:
-
-    Método: PUT
-
-        PATH: /api/turnos 
 
 
 
