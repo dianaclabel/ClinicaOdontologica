@@ -64,7 +64,7 @@ public class PacientesServicioTest {
         guardado.setNombre("ModificadoTest");
         guardado.setDni("22222222");
 
-        PacienteDTO modificado = pacientesServicio.modificarPaciente(guardado);
+        PacienteDTO modificado = pacientesServicio.modificarPaciente(guardado.getId(), guardado);
 
         assertEquals(guardado.getApellido(), modificado.getApellido());
         assertEquals(guardado.getNombre(), modificado.getNombre());

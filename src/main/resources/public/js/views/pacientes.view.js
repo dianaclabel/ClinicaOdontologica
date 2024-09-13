@@ -10,9 +10,9 @@ import { dispatch } from "../utils/dispatch.js";
 
 const pacientesApi = new PacientesApi();
 
-const MODAL_PACIENTE_ID = "modalPaciente";
-const TABLE_PACIENTES_ID = "pacientesTable";
-const FORM_PACIENTE_ID = "formPaciente";
+const PACIENTE_MODAL_ID = "modalPaciente";
+const PACIENTES_TABLE_ID = "pacientesTable";
+const PACIENTE_FORM_ID = "formPaciente";
 
 export const PacientesView = async () =>
   Container({
@@ -30,11 +30,11 @@ export const PacientesView = async () =>
           Button({
             text: "Nuevo Paciente",
             onclick: () => {
-              const modal = document.getElementById(MODAL_PACIENTE_ID);
+              const modal = document.getElementById(PACIENTE_MODAL_ID);
               $(modal).modal("show");
               dispatch(modal, MODAL_EVENT_SET_TITLE, "Nuevo Paciente");
 
-              const form = document.getElementById(FORM_PACIENTE_ID);
+              const form = document.getElementById(PACIENTE_FORM_ID);
               dispatch(form, FORM_EVENT_INIT_RECORD, undefined);
             },
             classnames: "mx-auto",
@@ -43,15 +43,20 @@ export const PacientesView = async () =>
       }),
 
       await Table({
-        id: TABLE_PACIENTES_ID,
+        id: PACIENTES_TABLE_ID,
         getRecords: () => pacientesApi.getAll(),
         columns: [
           { key: "id", label: "ID" },
           { key: "nombre", label: "Nombre" },
           { key: "apellido", label: "Apellido" },
           { key: "dni", label: "DNI" },
-          { key: "fechaIngreso", label: "Fecha de Ingreso" },
-          { key: "domicilio", label: "Domicilio", format: (domicilio) => `${domicilio.calle} ${domicilio.numero}, ${domicilio.ciudad}, ${domicilio.provincia}` },
+          { key: "fechaAlta", label: "Fecha de Alta" },
+          {
+            key: "domicilio",
+            label: "Domicilio",
+            format: (domicilio) =>
+              `${domicilio.calle} ${domicilio.numero}, ${domicilio.localidad}, ${domicilio.provincia}`,
+          },
 
           {
             key: "acciones",
@@ -63,16 +68,11 @@ export const PacientesView = async () =>
                   Button({
                     text: "Editar",
                     onclick: () => {
-                      const modal =
-                        document.getElementById(MODAL_PACIENTE_ID);
+                      const modal = document.getElementById(PACIENTE_MODAL_ID);
                       $(modal).modal("show");
-                      dispatch(
-                        modal,
-                        MODAL_EVENT_SET_TITLE,
-                        "Editar paciente"
-                      );
+                      dispatch(modal, MODAL_EVENT_SET_TITLE, "Editar paciente");
 
-                      const form = document.getElementById(FORM_PACIENTE_ID);
+                      const form = document.getElementById(PACIENTE_FORM_ID);
                       dispatch(form, FORM_EVENT_INIT_RECORD, record);
                     },
                     classnames: "btn btn-primary",
@@ -90,7 +90,7 @@ export const PacientesView = async () =>
                       }
                       await pacientesApi.delete(record.id);
                       dispatch(
-                        document.getElementById(TABLE_PACIENTES_ID),
+                        document.getElementById(PACIENTES_TABLE_ID),
                         TABLE_EVENT_RELOAD
                       );
                     },
@@ -103,10 +103,10 @@ export const PacientesView = async () =>
       }),
 
       Modal({
-        id: MODAL_PACIENTE_ID,
+        id: PACIENTE_MODAL_ID,
         title: "Nuevo paciente",
         content: Form({
-          id: FORM_PACIENTE_ID,
+          id: PACIENTE_FORM_ID,
           classNames: "p-4",
           fields: [
             {
@@ -128,10 +128,10 @@ export const PacientesView = async () =>
               validate: (v) => (v ? true : "La matrícula es requerida"),
             },
             {
-               name: "fechaAlta",
-                label: "Fecha de Alta",
-                type: "date",
-                validate: (v) => (v ? true : "La fecha de ingreso es requerida"),
+              name: "fechaAlta",
+              label: "Fecha de Alta",
+              type: "date",
+              validate: (v) => (v ? true : "La fecha de ingreso es requerida"),
             },
             {
               name: "domicilio.calle",
@@ -145,44 +145,30 @@ export const PacientesView = async () =>
               type: "text",
               validate: (v) => (v ? true : "El número es requerido"),
             },
-            { name: "domicilio.ciudad",
-              label: "Ciudad",
+            {
+              name: "domicilio.localidad",
+              label: "Localidad",
               type: "text",
-              validate: (v) => (v ? true : "La ciudad es requerida"),
+              validate: (v) => (v ? true : "La localidad es requerida"),
             },
             {
               name: "domicilio.provincia",
               label: "Provincia",
               type: "text",
               validate: (v) => (v ? true : "La provincia es requerida"),
-              },
+            },
           ],
           submit: { text: "Guardar" },
           onSubmit: async (formData, record) => {
-            const pacienteData = {
-              ...formData,
-              domicilio: {
-                calle: formData["domicilio.calle"],
-                numero: formData["domicilio.numero"],
-                localidad: formData["domicilio.localidad"],
-                provincia: formData["domicilio.provincia"],
-              },
-            };
-
-            delete pacienteData["domicilio.calle"];
-            delete pacienteData["domicilio.numero"];
-            delete pacienteData["domicilio.localidad"];
-            delete pacienteData["domicilio.provincia"];
-
             if (record) {
               await pacientesApi.update(record.id, formData);
             } else {
               await pacientesApi.create(formData);
             }
-            $(`#${MODAL_PACIENTE_ID}`).modal("hide"); // Bootstrap
+            $(`#${PACIENTE_MODAL_ID}`).modal("hide"); // Bootstrap
             // Reload table
             dispatch(
-              document.getElementById(TABLE_PACIENTES_ID),
+              document.getElementById(PACIENTES_TABLE_ID),
               TABLE_EVENT_RELOAD
             );
           },

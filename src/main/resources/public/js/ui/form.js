@@ -41,23 +41,29 @@ export function Form({
   }
 
   for (const field of fields) {
+    const fieldId = generateFieldId(id, field.name);
     const fieldContainer = document.createElement("div");
     fieldContainer.classList.add("mb-3");
 
     const fieldLabel = document.createElement("label");
-    fieldLabel.htmlFor = `${id}-${field.name}`;
+    fieldLabel.htmlFor = fieldId;
     fieldLabel.textContent = field.label;
     fieldLabel.classList.add("form-label");
     fieldContainer.appendChild(fieldLabel);
 
     const fieldInput = document.createElement("input");
-    fieldInput.id = `${id}-${field.name}`;
+    fieldInput.id = fieldId;
     fieldInput.type = field.type;
     if (field.placeholder) {
       fieldInput.placeholder = field.placeholder;
     }
-    if (record?.[field.name]) {
-      fieldInput.value = record[field.name];
+    if (record) {
+      const value = field.name
+        .split(".")
+        .reduce((acc, key) => acc?.[key], record);
+      if (value) {
+        fieldInput.value = value;
+      }
     }
     fieldInput.classList.add("form-control");
     fieldContainer.appendChild(fieldInput);
@@ -103,9 +109,18 @@ export function Form({
     const formData = {};
 
     for (const field of fields) {
-      const input = document.getElementById(`${id}-${field.name}`);
+      const fieldId = generateFieldId(id, field.name);
+      const input = document.getElementById(fieldId);
       const value = input.value;
-      formData[field.name] = value;
+      const keys = field.name.split(".");
+      let current = formData;
+      for (let i = 0; i < keys.length - 1; i++) {
+        if (!current[keys[i]]) {
+          current[keys[i]] = {};
+        }
+        current = current[keys[i]];
+      }
+      current[keys[keys.length - 1]] = value;
 
       await validateField(input, field);
       if (input.classList.contains("is-invalid")) {
@@ -121,7 +136,8 @@ export function Form({
   form.addEventListener(FORM_EVENT_SET_VALUES, (event) => {
     const values = event.detail;
     for (const [name, value] of Object.entries(values)) {
-      const input = document.getElementById(`${id}-${name}`);
+      const fieldId = generateFieldId(id, name);
+      const input = document.getElementById(fieldId);
       if (input) {
         input.value = value;
       }
@@ -132,13 +148,20 @@ export function Form({
   form.addEventListener(FORM_EVENT_INIT_RECORD, (event) => {
     record = event.detail;
     hasSubmitted = false;
-    if (!record) {
-      return;
-    }
     for (const field of fields) {
-      const input = document.getElementById(`${id}-${field.name}`);
+      const fieldId = generateFieldId(id, field.name);
+      const input = document.getElementById(fieldId);
       if (input) {
-        input.value = record[field.name];
+        if (record) {
+          const value = field.name
+            .split(".")
+            .reduce((acc, key) => acc?.[key], record);
+          if (value) {
+            input.value = value;
+          }
+        } else {
+          input.value = "";
+        }
         // Clear validation messages
         input.classList.remove("is-invalid");
         input.nextElementSibling.textContent = "";
@@ -152,4 +175,8 @@ export function Form({
   });
 
   return form;
+}
+
+function generateFieldId(formId, fieldName) {
+  return `${formId}-${fieldName.replace(/\./g, "-")}`;
 }

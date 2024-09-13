@@ -12,7 +12,7 @@ import java.util.Set;
 public interface IPacientesServicio {
     PacienteDTO registrarPaciente(PacienteDTO pacienteDTO);
     void eliminarPaciente(Long id);
-    PacienteDTO modificarPaciente(PacienteDTO pacienteDTO);
+    PacienteDTO modificarPaciente(Long id,PacienteDTO pacienteDTO);
     PacienteDTO buscarUnPaciente(Long id);
     Set<PacienteDTO> buscarTodos();
 

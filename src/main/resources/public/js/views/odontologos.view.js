@@ -10,9 +10,9 @@ import { dispatch } from "../utils/dispatch.js";
 
 const odontologosApi = new OdontologosApi();
 
-const MODAL_ODONTOLOGO_ID = "modalOdontologo";
-const TABLE_ODONTOLOGOS_ID = "odontologosTable";
-const FORM_ODONTOLOGO_ID = "formOdontologo";
+const ODONTOLOGO_MODAL_ID = "modalOdontologo";
+const ODONTOLOGOS_TABLE_ID = "odontologosTable";
+const ODONTOLOGO_FORM_ID = "formOdontologo";
 
 export const OdontologosView = async () =>
   Container({
@@ -30,11 +30,11 @@ export const OdontologosView = async () =>
           Button({
             text: "Nuevo Odontólogo",
             onclick: () => {
-              const modal = document.getElementById(MODAL_ODONTOLOGO_ID);
+              const modal = document.getElementById(ODONTOLOGO_MODAL_ID);
               $(modal).modal("show");
               dispatch(modal, MODAL_EVENT_SET_TITLE, "Nuevo Odontólogo");
 
-              const form = document.getElementById(FORM_ODONTOLOGO_ID);
+              const form = document.getElementById(ODONTOLOGO_FORM_ID);
               dispatch(form, FORM_EVENT_INIT_RECORD, undefined);
             },
             classnames: "mx-auto",
@@ -43,7 +43,7 @@ export const OdontologosView = async () =>
       }),
 
       await Table({
-        id: TABLE_ODONTOLOGOS_ID,
+        id: ODONTOLOGOS_TABLE_ID,
         getRecords: () => odontologosApi.getAll(),
         columns: [
           { key: "id", label: "ID" },
@@ -61,7 +61,7 @@ export const OdontologosView = async () =>
                     text: "Editar",
                     onclick: () => {
                       const modal =
-                        document.getElementById(MODAL_ODONTOLOGO_ID);
+                        document.getElementById(ODONTOLOGO_MODAL_ID);
                       $(modal).modal("show");
                       dispatch(
                         modal,
@@ -69,7 +69,7 @@ export const OdontologosView = async () =>
                         "Editar Odontólogo"
                       );
 
-                      const form = document.getElementById(FORM_ODONTOLOGO_ID);
+                      const form = document.getElementById(ODONTOLOGO_FORM_ID);
                       dispatch(form, FORM_EVENT_INIT_RECORD, record);
                     },
                     classnames: "btn btn-primary",
@@ -87,7 +87,7 @@ export const OdontologosView = async () =>
                       }
                       await odontologosApi.delete(record.id);
                       dispatch(
-                        document.getElementById(TABLE_ODONTOLOGOS_ID),
+                        document.getElementById(ODONTOLOGOS_TABLE_ID),
                         TABLE_EVENT_RELOAD
                       );
                     },
@@ -100,10 +100,10 @@ export const OdontologosView = async () =>
       }),
 
       Modal({
-        id: MODAL_ODONTOLOGO_ID,
+        id: ODONTOLOGO_MODAL_ID,
         title: "Nuevo Odontólogo",
         content: Form({
-          id: FORM_ODONTOLOGO_ID,
+          id: ODONTOLOGO_FORM_ID,
           classNames: "p-4",
           fields: [
             {
@@ -132,10 +132,10 @@ export const OdontologosView = async () =>
             } else {
               await odontologosApi.create(formData);
             }
-            $(`#${MODAL_ODONTOLOGO_ID}`).modal("hide"); // Bootstrap
+            $(`#${ODONTOLOGO_MODAL_ID}`).modal("hide"); // Bootstrap
             // Reload table
             dispatch(
-              document.getElementById(TABLE_ODONTOLOGOS_ID),
+              document.getElementById(ODONTOLOGOS_TABLE_ID),
               TABLE_EVENT_RELOAD
             );
           },

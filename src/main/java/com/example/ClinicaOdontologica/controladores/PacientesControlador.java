@@ -27,9 +27,9 @@ public class PacientesControlador {
         return new ResponseEntity<>(nuevoPaciente, HttpStatus.CREATED);*/
     }
 
-    @PutMapping
-    public ResponseEntity<?> modificarPaciente(@RequestBody PacienteDTO pacienteDTO){
-        pacientesServicio.modificarPaciente(pacienteDTO);
+    @PutMapping("/{id}")
+    public ResponseEntity<?> modificarPaciente(@PathVariable Long id,@RequestBody PacienteDTO pacienteDTO){
+        pacientesServicio.modificarPaciente(id,pacienteDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

@@ -1,7 +1,9 @@
 package com.example.ClinicaOdontologica.servicios.impl;
 
 import com.example.ClinicaOdontologica.config.SpringConfig;
+import com.example.ClinicaOdontologica.entidades.Odontologo;
 import com.example.ClinicaOdontologica.entidades.Paciente;
+import com.example.ClinicaOdontologica.model.OdontologoDTO;
 import com.example.ClinicaOdontologica.model.PacienteDTO;
 import com.example.ClinicaOdontologica.repositorios.IPacientesRepositorio;
 import com.example.ClinicaOdontologica.servicios.IPacientesServicio;
@@ -37,16 +39,36 @@ public class PacientesServicio implements IPacientesServicio {
     }
 
     @Override
-    public PacienteDTO modificarPaciente(PacienteDTO pacienteDTO) {
-        logger.info("Modificando paciente id: " + pacienteDTO.getId());
+    public PacienteDTO modificarPaciente(Long id,PacienteDTO pacienteDTO) {
+        logger.info("Modificando paciente id: " + id);
         PacienteDTO pacienteModificado = null;
-        Optional<Paciente> pacienteAModificar = pacientesRepositorio.findById(pacienteDTO.getId());
+        Optional<Paciente> pacienteAModificar = pacientesRepositorio.findById(id);
         if (pacienteAModificar.isPresent()) {
             Paciente paciente = springConfig.getModelMapper().map(pacienteDTO, Paciente.class);
+            paciente.setId(id); // Ensure the ID is set correctly
             pacienteModificado = springConfig.getModelMapper().map(pacientesRepositorio.save(paciente), PacienteDTO.class);
         }
         logger.info("Paciente modificado");
         return pacienteModificado;
+
+        /*logger.info("Modificando paciente id: " + pacienteDTO.getId());
+
+        Paciente pacienteAModificar = pacientesRepositorio.findById(id).orElse(null);
+        if (pacienteAModificar != null) {
+
+            if (pacienteDTO.getNombre() != null) pacienteAModificar.setNombre(pacienteDTO.getNombre());
+            if (pacienteDTO.getApellido() != null) pacienteAModificar.setApellido(pacienteDTO.getApellido());
+            if (pacienteDTO.getDni() != null) pacienteAModificar.setDni(pacienteDTO.getDni());
+            if (pacienteDTO.getFechaAlta() != null) pacienteAModificar.setFechaAlta(pacienteDTO.getFechaAlta());
+            if (pacienteDTO.getDomicilio() != null) pacienteAModificar.setDomicilio(pacienteDTO.getDomicilio());
+
+            Paciente pacienteGuardado = pacientesRepositorio.save(pacienteAModificar);
+            logger.info("Paciente Modificado");
+            return springConfig.getModelMapper().map(pacienteGuardado, PacienteDTO.class);
+        }else{
+            logger.info("paciente no encontrado");
+            return null;
+        }*/
     }
 
     @Override
