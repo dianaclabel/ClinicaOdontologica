@@ -1,9 +1,7 @@
 package com.example.ClinicaOdontologica.servicios.impl;
 
 import com.example.ClinicaOdontologica.config.SpringConfig;
-import com.example.ClinicaOdontologica.entidades.Odontologo;
 import com.example.ClinicaOdontologica.entidades.Paciente;
-import com.example.ClinicaOdontologica.model.OdontologoDTO;
 import com.example.ClinicaOdontologica.model.PacienteDTO;
 import com.example.ClinicaOdontologica.repositorios.IPacientesRepositorio;
 import com.example.ClinicaOdontologica.servicios.IPacientesServicio;
@@ -15,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+
 @Service
 public class PacientesServicio implements IPacientesServicio {
 

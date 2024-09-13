@@ -8,17 +8,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import com.example.ClinicaOdontologica.dto.OdontologoCreateDTO;
-import com.example.ClinicaOdontologica.dto.OdontologoUpdateDTO;
 import com.example.ClinicaOdontologica.entidades.Odontologo;
 import com.example.ClinicaOdontologica.model.OdontologoDTO;
 import com.example.ClinicaOdontologica.repositorios.IOdontologosRepositorio;
 import com.example.ClinicaOdontologica.servicios.IOdontologosSevicio;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Set;
 
 @Service
 public class OdontologosServicio  implements IOdontologosSevicio{

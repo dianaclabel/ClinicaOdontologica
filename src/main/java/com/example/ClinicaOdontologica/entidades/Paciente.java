@@ -1,5 +1,4 @@
 package com.example.ClinicaOdontologica.entidades;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -32,8 +31,6 @@ public class Paciente {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(nullable = false, name = "domicilio_id")
     private Domicilio domicilio;
-
-
 
 
 }

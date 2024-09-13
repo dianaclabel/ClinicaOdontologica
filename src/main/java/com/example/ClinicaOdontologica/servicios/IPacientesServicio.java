@@ -1,12 +1,8 @@
 package com.example.ClinicaOdontologica.servicios;
 
-import com.example.ClinicaOdontologica.dto.OdontologoCreateDTO;
-import com.example.ClinicaOdontologica.dto.OdontologoUpdateDTO;
 
-import com.example.ClinicaOdontologica.entidades.Paciente;
 import com.example.ClinicaOdontologica.model.PacienteDTO;
 
-import java.util.List;
 import java.util.Set;
 
 public interface IPacientesServicio {
